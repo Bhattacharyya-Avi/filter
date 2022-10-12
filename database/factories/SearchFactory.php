@@ -19,7 +19,7 @@ class SearchFactory extends Factory
     {
         return [
             'user_id'=>$this->faker->numberBetween(1,10),
-            'keyword'=>$this->faker->word(),
+            'keyword'=>$this->faker->randomElement(['Laravel','PHP','Html','Css','Google','Tailwind']),
             'date'=>Carbon::now()->format('Y-m-d'),
             'result'=> $this->faker->sentence(),
 
