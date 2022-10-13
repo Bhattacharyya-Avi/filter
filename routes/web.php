@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\SearchController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,4 +16,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
+});
+
+Route::controller(SearchController::class)->group(function(){
+    Route::get('/list','list')->name('search.list');
+    Route::post('/filter','filter')->name('search.filter');
 });
