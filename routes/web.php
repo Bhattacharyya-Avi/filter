@@ -25,5 +25,5 @@ Route::controller(DashboardController::class)->group(function(){
 
 Route::controller(SearchController::class)->group(function(){
     Route::get('/list','list')->name('search.list');
-    Route::post('/filter','filter')->name('search.filter');
+    Route::get('/filter','filter')->name('search.filter');
 });

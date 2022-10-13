@@ -7,12 +7,13 @@
 
         <h2>Options</h2>
         <div class="table-responsive">
-            <form action="{{route('search.filter')}}" method="POST">
+            <form action="{{route('search.filter')}}" method="get">
+            {{-- <form action="{{route('search.list')}}" method="get"> --}}
                 @csrf
                 <h6>users</h6>
                 @foreach ($users as $key=>$user)
                 <div class="form-check form-check-inline">
-                    <input name="user[]" class="form-check-input" type="checkbox" id="inlineCheckbox1{{$key+1}}"
+                    <input name="user" class="form-check-input" type="checkbox" id="inlineCheckbox1"
                         value="{{$user->id}}">
                     <label class="form-check-label" for="inlineCheckbox1">{{$user->name}}</label>
                 </div>
@@ -21,7 +22,7 @@
                 <h6>Keywords</h6>
                 @foreach ($keywords_list as $key=>$keyword_list)
                 <div class="form-check form-check-inline">
-                    <input name="keyword[]" class="form-check-input" type="checkbox"
+                    <input name="keyword" class="form-check-input" type="checkbox"
                         id="inlineCheckbox1{{$key+1}}" value="{{$keyword_list->keyword}}">
                     <label class="form-check-label" for="inlineCheckbox1">{{$keyword_list->keyword}}
                         {{$keyword_list->total}} Times</label>
@@ -34,11 +35,11 @@
                     <label class="form-check-label" for="inlineCheckbox1">Yesterday</label>
                 </div>
                 <div class="form-check form-check-inline">
-                    <input name="time" class="form-check-input" type="checkbox" id="inlineCheckbox2" value="Last week">
+                    <input name="time" class="form-check-input" type="checkbox" id="inlineCheckbox2" value="LastWeek">
                     <label class="form-check-label" for="inlineCheckbox1">Last week</label>
                 </div>
                 <div class="form-check form-check-inline">
-                    <input name="time" class="form-check-input" type="checkbox" id="inlineCheckbox2" value="Last month">
+                    <input name="time" class="form-check-input" type="checkbox" id="inlineCheckbox2" value="LastMonth">
                     <label class="form-check-label" for="inlineCheckbox1">Last month</label>
                 </div>
 
@@ -50,7 +51,7 @@
                     </div>
                     <div class="col">
                         <label for="totdate">To Date</label>
-                        <input name="totdate" type="date" class="form-control" placeholder="">
+                        <input name="todate" type="date" class="form-control" placeholder="">
                     </div>
                 </div>
                 <br>
@@ -95,6 +96,7 @@
             }
         })
 
+        // reading all data
         function readdata(){
             $.ajax({
                 type:"GET",
@@ -102,8 +104,9 @@
                 url: "{{route('search.list')}}",
                 success:function(search_result) {
                     var data = ""
+                    // data.empty();
                     $.each(search_result, function(key,value) {
-                        console.log(value)
+                        // console.log(value)
                         data = data + "<tr>"
                         data = data + "<td>"+(key+1)+"</td>"
                         data = data + "<td>"+value.user.name+"</td>"
@@ -118,6 +121,28 @@
         }
         readdata();
 
-        
+        function resultdata(){
+            $.ajax({
+                type:"get",
+                dataType:'json',
+                url: "{{route('search.filter')}}",
+                success:function(filter_result) {
+                    var data = ""
+                    $.each(filter_result, function(key,value) {
+                        console.log(value)
+                        data = data + "<tr>"
+                        data = data + "<td>"+(key+1)+"</td>"
+                        data = data + "<td>"+value.user.name+"</td>"
+                        data = data + "<td>"+value.keyword+"</td>"
+                        data = data + "<td>"+value.date+"</td>"
+                        data = data + "<td>"+value.result+"</td>"
+                        data = data + "</tr>"
+                    })
+                    $('tbody').html(data);
+                }
+            })
+        }
+        resultdata()
+
     </script>
 @endsection
