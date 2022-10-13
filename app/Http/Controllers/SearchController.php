@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Search;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -10,13 +11,8 @@ class SearchController extends Controller
 {
     public function list()
     {
-        $keywords_list = DB::table('searches')
-                ->select('keyword', DB::raw('count(*) as total'))
-                ->groupBy('keyword')
-                ->get();
-        $users = User::all();
-
-                return view('search.index',compact('users','keywords_list'));
+        $search_result = Search::with('user')->get();
+        return response()->json($search_result);
     }
 
     public function filter(Request $request)
