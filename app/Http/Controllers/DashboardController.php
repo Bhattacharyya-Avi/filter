@@ -12,23 +12,24 @@ class DashboardController extends Controller
 {
     public function dashboard()
     {
+        // geting the keywords with number of existence
         $keywords_list = DB::table('searches')
         ->select('keyword', DB::raw('count(*) as total'))
         ->groupBy('keyword')
         ->get();
-        $users = User::all();
-        // $results = Search::all();
 
-        $results = Search::query();
+        // geting all user list
+        $users = User::all();
+
+        // filtering start
+        $results = Search::query(); // runing the filter if any data passed.
         if (request()->user != null) {
             $results->where('user_id', request()->user);
-            // return response()->json($filter_result);
         }
 
         // only by keyword
         if (request()->keyword != null) {
         $results ->where('keyword', request()->keyword);
-        //    dd($filter_result);
         }
 
         // only by time
@@ -64,12 +65,15 @@ class DashboardController extends Controller
 
         // only by date range
         if (request()->fromdate != null && request()->todate != null) {
+            request()->validate([
+                'formdate' => 'required',
+                'todate' => 'required|after:formdate',
+            ]);
+
             $results ->whereBetween('date', [request()->fromdate, request()->todate]);
-            // dd($filter_result);
         }
-        // dd($search_result->get());
-        $results = $results->get();
-    // }
+        // filter end
+        $results = $results->get(); // geting all data if nothin to filter if any filter data filter the data
 
         return view('search.index',compact('users','keywords_list','results'));
     }
