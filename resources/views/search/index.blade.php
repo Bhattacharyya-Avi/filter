@@ -7,7 +7,7 @@
 
         <h2>Options</h2>
         <div class="table-responsive">
-            <form action="{{route('search.filter')}}" method="get">
+            <form action="" method="get">
             {{-- <form action="{{route('search.list')}}" method="get"> --}}
                 @csrf
                 <h6>users</h6>
@@ -75,13 +75,16 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {{-- <tr>
-                        <td>1</td>
-                        <td>username</td>
-                        <td>keyword</td>
-                        <td>date</td>
-                        <td>result</td>
-                    </tr> --}}
+                    @foreach ($results as $key=>$result)
+                    <tr>
+                        <td>{{$key+1}}</td>
+                        <td>{{$result->user->name}}</td>
+                        <td>{{$result->keyword}}</td>
+                        <td>{{$result->date}}</td>
+                        <td>{{$result->result}}</td>
+                    </tr>
+                    @endforeach
+                    
                 </tbody>
             </table>
         </div>
@@ -97,52 +100,52 @@
         })
 
         // reading all data
-        function readdata(){
-            $.ajax({
-                type:"GET",
-                dataType:'json',
-                url: "{{route('search.list')}}",
-                success:function(search_result) {
-                    var data = ""
-                    // data.empty();
-                    $.each(search_result, function(key,value) {
-                        // console.log(value)
-                        data = data + "<tr>"
-                        data = data + "<td>"+(key+1)+"</td>"
-                        data = data + "<td>"+value.user.name+"</td>"
-                        data = data + "<td>"+value.keyword+"</td>"
-                        data = data + "<td>"+value.date+"</td>"
-                        data = data + "<td>"+value.result+"</td>"
-                        data = data + "</tr>"
-                    })
-                    $('tbody').html(data);
-                }
-            })
-        }
-        readdata();
+        // function readdata(){
+        //     $.ajax({
+        //         type:"GET",
+        //         dataType:'json',
+        //         url: "{{route('search.list')}}",
+        //         success:function(search_result) {
+        //             var data = ""
+        //             // data.empty();
+        //             $.each(search_result, function(key,value) {
+        //                 console.log(value)
+        //                 data = data + "<tr>"
+        //                 data = data + "<td>"+(key+1)+"</td>"
+        //                 data = data + "<td>"+value.user.name+"</td>"
+        //                 data = data + "<td>"+value.keyword+"</td>"
+        //                 data = data + "<td>"+value.date+"</td>"
+        //                 data = data + "<td>"+value.result+"</td>"
+        //                 data = data + "</tr>"
+        //             })
+        //             $('tbody').html(data);
+        //         }
+        //     })
+        // }
+        // readdata();
 
-        function resultdata(){
-            $.ajax({
-                type:"get",
-                dataType:'json',
-                url: "{{route('search.filter')}}",
-                success:function(filter_result) {
-                    var data = ""
-                    $.each(filter_result, function(key,value) {
-                        console.log(value)
-                        data = data + "<tr>"
-                        data = data + "<td>"+(key+1)+"</td>"
-                        data = data + "<td>"+value.user.name+"</td>"
-                        data = data + "<td>"+value.keyword+"</td>"
-                        data = data + "<td>"+value.date+"</td>"
-                        data = data + "<td>"+value.result+"</td>"
-                        data = data + "</tr>"
-                    })
-                    $('tbody').html(data);
-                }
-            })
-        }
-        resultdata()
+        // function resultdata(){
+        //     $.ajax({
+        //         type:"get",
+        //         dataType:'json',
+        //         url: "{{route('search.filter')}}",
+        //         success:function(filter_result) {
+        //             var data = ""
+        //             $.each(filter_result, function(key,value) {
+        //                 console.log(value)
+        //                 data = data + "<tr>"
+        //                 data = data + "<td>"+(key+1)+"</td>"
+        //                 data = data + "<td>"+value.user.name+"</td>"
+        //                 data = data + "<td>"+value.keyword+"</td>"
+        //                 data = data + "<td>"+value.date+"</td>"
+        //                 data = data + "<td>"+value.result+"</td>"
+        //                 data = data + "</tr>"
+        //             })
+        //             $('tbody').html(data);
+        //         }
+        //     })
+        // }
+        // resultdata()
 
     </script>
 @endsection
