@@ -8,7 +8,6 @@
         <h2>Options</h2>
         <div class="table-responsive">
             <form action="" method="get">
-            {{-- <form action="{{route('search.list')}}" method="get"> --}}
                 @csrf
                 <h6>users</h6>
                 @foreach ($users as $key=>$user)
@@ -59,6 +58,9 @@
                     <button type="submit" class="btn btn-info">Submit</button>
                 </div> 
             </form>
+            @if (request()->_token != null)
+                <a href="{{route('dashboard')}}" class="btn btn-danger" style="margin-top: 5px">Clear</a>
+            @endif
         </div>
         <br>
         
@@ -89,63 +91,4 @@
             </table>
         </div>
     </main>
-@endsection
-
-@section('ajax')
-    <script>
-        $.ajaxSetup({
-            headers:{
-                'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')
-            }
-        })
-
-        // reading all data
-        // function readdata(){
-        //     $.ajax({
-        //         type:"GET",
-        //         dataType:'json',
-        //         url: "{{route('search.list')}}",
-        //         success:function(search_result) {
-        //             var data = ""
-        //             // data.empty();
-        //             $.each(search_result, function(key,value) {
-        //                 console.log(value)
-        //                 data = data + "<tr>"
-        //                 data = data + "<td>"+(key+1)+"</td>"
-        //                 data = data + "<td>"+value.user.name+"</td>"
-        //                 data = data + "<td>"+value.keyword+"</td>"
-        //                 data = data + "<td>"+value.date+"</td>"
-        //                 data = data + "<td>"+value.result+"</td>"
-        //                 data = data + "</tr>"
-        //             })
-        //             $('tbody').html(data);
-        //         }
-        //     })
-        // }
-        // readdata();
-
-        // function resultdata(){
-        //     $.ajax({
-        //         type:"get",
-        //         dataType:'json',
-        //         url: "{{route('search.filter')}}",
-        //         success:function(filter_result) {
-        //             var data = ""
-        //             $.each(filter_result, function(key,value) {
-        //                 console.log(value)
-        //                 data = data + "<tr>"
-        //                 data = data + "<td>"+(key+1)+"</td>"
-        //                 data = data + "<td>"+value.user.name+"</td>"
-        //                 data = data + "<td>"+value.keyword+"</td>"
-        //                 data = data + "<td>"+value.date+"</td>"
-        //                 data = data + "<td>"+value.result+"</td>"
-        //                 data = data + "</tr>"
-        //             })
-        //             $('tbody').html(data);
-        //         }
-        //     })
-        // }
-        // resultdata()
-
-    </script>
 @endsection
