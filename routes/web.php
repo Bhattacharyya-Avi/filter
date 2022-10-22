@@ -23,3 +23,6 @@ Route::controller(DashboardController::class)->group(function(){
     Route::get('/dashboard','dashboard')->name('dashboard');
 });
 
+Route::controller(SearchController::class)->group(function(){
+    Route::get('/search', 'search')->name('search');
+});

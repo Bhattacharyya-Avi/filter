@@ -7,7 +7,7 @@
 
         <h2>Options</h2>
         <div class="table-responsive">
-            <form action="" method="get">
+            <form action="{{route('search')}}" method="get">
                 @csrf
                 <h6>users</h6>
                 @foreach ($users as $key=>$user)
@@ -77,7 +77,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($results as $key=>$result)
+                    {{-- @foreach ($results as $key=>$result)
                     <tr>
                         <td>{{$key+1}}</td>
                         <td>{{$result->user->name}}</td>
@@ -85,10 +85,42 @@
                         <td>{{$result->date}}</td>
                         <td>{{$result->result}}</td>
                     </tr>
-                    @endforeach
+                    @endforeach --}}
                     
                 </tbody>
             </table>
         </div>
     </main>
+@endsection
+
+@section('ajax')
+    <script>
+        $.ajaxSetup({
+            headers:{
+                'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')
+            }
+        })
+        function readdata(){
+            $.ajax({
+                type:"GET",
+                dataType:'json',
+                url: "{{route('search')}}",
+                success:function(results) {
+                    var data = ""
+                    $.each(results, function(key,value) {
+                        console.log(value)
+                        data = data + "<tr>"
+                        data = data + "<td>"+(key+1)+"</td>"
+                        data = data + "<td>"+value.user_id+"</td>"
+                        data = data + "<td>"+value.keyword+"</td>"
+                        data = data + "<td>"+value.date+"</td>"
+                        data = data + "<td>"+value.result+"</td>"
+                        data = data + "</tr>"
+                    })
+                    $('tbody').html(data);
+                }
+            })
+        }
+        readdata();
+    </script>
 @endsection
